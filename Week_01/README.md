@@ -269,7 +269,7 @@ PC Register는 스레드가 생성될 때마다 생성되며, 현재 실행중�
 
 멀티 스레드가 동작할 때, 이곳의 정보를 이용해 여러 스레드를 동시에 실행할 수 있다.
 
-__e. Native Method Stack
+__e. Native Method Stack__
 
 Native Method Stack에는 자바 이외의 코드가 저장되는 공간이다.
 
