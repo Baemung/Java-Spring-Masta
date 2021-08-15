@@ -309,11 +309,11 @@ GC 과정을 좀 러프하게 설명하자면,
 
 ### 💡 JDK와 JRE의 차이
 
-<p align="center"><img src="../img/chap1_12.jpg"></p>
+<p align="center"><img src="../img/chap1_12.png"></p>
 
 위 이미지로 JRE(Java Runtime Environment)와 JDK(Java Development Kit)는 간단하게 설명이 가능하다.
 
-__JRE(Java Runtime Environment)__ 는 자바 실행 환경의 줄임말로 __JVM + 자바 라이브러리 등 자바를 실행하기 위한 프로그램__ 이다.
+__JRE(Java Runtime Environment)__ 는 자바 실행 환경의 줄임말로 __JVM + 자바 API 등 자바를 실행하기 위한 프로그램__ 이다.
 
 실제 자바를 설치하려면 JVM만을 설치할수는 없고 JRE를 설치하게 된다.
 
