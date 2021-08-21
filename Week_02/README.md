@@ -32,7 +32,7 @@
               |   int(default)      4 bytes         0       |
               |   long              8 bytes         0L      |
               |   float             4 bytes         0.0f    |
-묵시적 형변환  ▼   double(default)   8 bytes         0.0d    |
+묵시적 형변환    ▼   double(default)   8 bytes         0.0d    |
 (Promotion)
 ```
 
