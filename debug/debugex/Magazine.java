@@ -4,7 +4,7 @@ package com.jurib.debugex;
  * 잡지 정보를 나타내는 클래스
  */
 
-public class Magazine  {
+public class Magazine extends Book {
 	/**
 	 * 발행년도
 	 */
@@ -18,7 +18,8 @@ public class Magazine  {
 	public Magazine() {
 	}
 	/** 잡지 정보 모두를 받아 생성하는 생성자 */
-	public void Magazine(String isbn, String title, String author, String publisher, int price, String desc, int year, int month,int quantity) {
+	public Magazine(String isbn, String title, String author, String publisher, int price, String desc, int year, int month,int quantity) {
+		super(isbn, title, author, publisher, price, desc, quantity);
 		this.year = year;
 		this.month = month;
 	}

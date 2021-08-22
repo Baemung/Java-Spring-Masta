@@ -6,7 +6,8 @@ import java.io.Serializable;
  * 도서 정보를 나타내는 클래스
  */
 
-public class Book  {	
+public class Book  implements Serializable,Comparable<Book>{	
+	
 	/** 고유 번호 */
 	private String isbn;		
 	/**	제목 */
@@ -32,7 +33,8 @@ public class Book  {
 		this.author = author;
 		this.publisher = publisher;
 		this.price = price;
-		
+		this.desc = desc;
+		this.quantity = quantity;
 	}
 	/**
 	 * 고유번호를 반환한다.
@@ -136,10 +138,13 @@ public class Book  {
 	 * 도서의 정보를 문자열로 반환한다
 	 * @return 도서정보
 	 */
-	
-	 String toString() {
+	 public String toString() {
 		return isbn + '\t' + "| " + title + "  \t" + "| " + author + '\t' + "| " + publisher + '\t'
 				+ "| " + price + '\t' + "| " + desc + '\t'+ "| " + quantity + '\t';
+	}
+	@Override
+	public int compareTo(Book o) {
+		return o.isbn.compareTo(this.isbn);
 	}
 }
 

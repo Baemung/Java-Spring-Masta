@@ -27,15 +27,15 @@ public class BookManagerImpl implements IBookManager {
 	/**
 	 * 기본 생성자
 	 */
-	BookManagerImpl() { // 외부에서 객체 생성을 하지 못하도록  만든 생성자
+	private BookManagerImpl() { // 외부에서 객체 생성을 하지 못하도록  만든 생성자
 		loadData();				// 객체 생성시 기존에 저장된 데이터를 로드한다. 
 	}
 	/**
 	 * 내부에서 생성한 객체의 참조값을 반환한다.
 	 * @return 생성된 객체의 참조값
 	 */
-	public  IBookManager getInstance() {
-		return null;
+	public static IBookManager getInstance() {
+		return instance;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class BookManagerImpl implements IBookManager {
 		final int size = books.size();	// 저장되어 있는 도서개수 확인
 		for (int i = 0; i < size; ++i) {
 			// 삭제할 도서를 찾았다면 해당 도서 위치를 이용하여 리스트에서 도서 삭제
-			if (books.get(i).getIsbn()==isbn) {
+			if (books.get(i).getIsbn().equals(isbn)) {
 				books.remove(i);
 				break;
 			}
@@ -79,7 +79,7 @@ public class BookManagerImpl implements IBookManager {
 	@Override
 	public Book searchByIsbn(String isbn) {		
 		for (Book book : books) {
-			if(book.getIsbn()==isbn) return book;
+			if(book.getIsbn().equals(isbn)) return book;
 		}
 		return null;
 	}
@@ -93,7 +93,7 @@ public class BookManagerImpl implements IBookManager {
 		// 제목을 포함하는 도서의 개수를 알 수 없으므로 컬렉션을 활용하여 저장 후 마지막에 배열로 바꾸어 반환한다.
 		ArrayList<Book> temp = new ArrayList<Book>();
 		for (Book book : books) {
-			if(book.getTitle()==title) temp.add(book);
+			if(book.getTitle().contains(title)) temp.add(book);
 		}
 		Book[] result = new Book[temp.size()];  // 조회 결과를 담은 컬렉션의 크기를 활용하여 배열 생성
 		return temp.toArray(result); 			// 컬랙션의 내용을 배열로 복사 후 리턴
@@ -144,7 +144,7 @@ public class BookManagerImpl implements IBookManager {
 	 */
 	@Override
 	public double getPriceAvg() {
-		return getTotalPrice()/ books.size();
+		return (double)getTotalPrice()/ books.size();
 	}
 	/**
 	 * 고유번호에 해당하는 도서를 수량만큼 판매처리하여 재고를 감소시킨다.
@@ -184,15 +184,14 @@ public class BookManagerImpl implements IBookManager {
 		if(f.exists()) {	// 파일이 존재하면 파일에서 데이터 읽기
 			// 파일에서 읽어오기 위해 FileInputStream을 생성 후 저장된 도서리스트 객체를 읽어오기 위해 ObjectInputStream을 생성한다.
 			try(ObjectInputStream in  = new ObjectInputStream(new FileInputStream(f))){	
-				in.readObject();			// 도서리스트 객체를 파일에서 읽어오기			
+				books = (List<Book>)in.readObject();			// 도서리스트 객체를 파일에서 읽어오기			
 			} catch (Exception e) {
 				System.out.println("[SYSTEM]파일 읽기에 실패하였습니다.");
 				e.printStackTrace();
 			} 
+		}else {
+			books = new ArrayList<Book>();
 		}
-		
-		
-		
 	}
 	/**
 	 * 도서리스트를 파일에 저장한다.
