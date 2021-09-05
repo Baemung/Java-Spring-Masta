@@ -423,7 +423,7 @@ class Baemung extends Person implements Movable, Hearable, Developable
 #### 다형성은 조상클래스와 조상인터페이스 모두 적용 가능
 
 ```java
-class IronMan implements Heroble, Fightable, Transformable {}
+class IronMan implements Heroable, Fightable, Transformable {}
 
 IronMan tony = new IronMan();
 Object obj = tony;
