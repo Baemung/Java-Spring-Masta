@@ -1,17 +1,18 @@
 ## 🎯 목표
 ### 자바의 상속, 예외처리, 패키지에 대해 학습하기.
 
-### 📌 학습할 것
+## 📌 학습할 것
 ### [상속](#상속)
 - [관계성](#관계성)
 - [다형성](#다형성)
 - [메소드 재정의](#메소드-재정의)
 - [동적 바인딩](#동적-바인딩)
 
-### [예외처리](#예외처리)
+### [예외 처리](#예외-처리)
+- [처리 방법](#처리-방법)
+- [처리 규칙](#처리-규칙)
 
 ### [패키지](#패키지)
-- [패키지 개념](#패키지-개념)
 - [명명 규칙](#명명-규칙)
 - [패키지 사용](#패키지-사용)
 - [접근 제어자](#접근-제어자)
@@ -180,15 +181,153 @@ e는 Engineer에 없는 메소드는 사용하지 못하지만
 
 ---
 
-## 예외처리
+## 예외 처리
+예외 처리 키워드 5가지 : `try` `catch` `throw` `throws` `finally`
 
+예외 처리란, 프로그램 실행 중 발생할 수 있는 예기치 못한 예외 발생에 대비한 코드를 작성하는 것이며,<br>
+예외처리의 목적은 예외의 발생으로 인한 실행중인 프로그램의 갑작스런 비정상 종료를 막고 실행상태를 유지할 수 있도록 함
 
+### 처리 방법
+
+1. 예외가 발생한 메소드 내에서 직접 처리
+    - `try` - `catch` - `finally`
+
+try 구문은 예외가 발생 할 가능성이 있는 범위를 지정한다.<br>
+try 구문에는 최소 하나 이상의 catch 구문이 따라와 위치해야 한다.<br>
+finally 구문은 선택적으로 사용 가능하며, 예외 발생, catch 유무와 상관없이 반드시 수행된다.
+
+```java
+try{
+	// 예외가 발생할 만한 코드
+}catch (Exception e) {
+    System.out.println(e.getMessage()); 
+}finally{
+    System.out.println("종료");
+}
+```
+
+2. 예외가 발생한 메소드를 호출한 곳으로 예외 객체를 넘겨줌
+    - `throws`
+
+throws는 어떠한 메소드의 내부 소스코드에서 에러가 발생했을시 1번 방법처럼 예외를 직접 처리하는 것이 아니라,<br>
+이 메소드를 호출하는 곳에서 처리를 하도록 예외 객체를 전달함.
+
+```java
+public void throwMethod() throws Exception{
+    // 예외가 발생할 만한 코드
+}
+
+public static void main(String[] args) {
+    try{ 
+        throwMethod();
+    }catch (Exception e) {
+        System.out.println(e.getMessage()); 
+    }finally{
+        System.out.println("종료");
+    }
+}
+```
+
+3. 사용자 정의 예외를 생성하여 처리
+    - `throw`
+
+Exception 클래스를 상속받는 사용자 정의 예외 클래스를 생성하여 해당 예외 객체를 throw할 수 있다.
+
+3번 방법은 앞선 1번 방법, 2번 방법을 모두 적용가능하다.
+
+```java
+public class CustomException extends Exception{
+    public CustomException(){
+        super("사용자 정의 예외 발생!");
+    }
+}
+```
+
+1번 방법처럼 try - catch문으로 예외가 발생한 메소드 내에서 직접 처리
+```java
+try{
+    throw new CustomException();
+}catch (CustomException e) {
+    System.out.println(e.getMessage()); 
+}finally{
+    System.out.println("종료");
+}
+```
+
+2번 방법처럼 해당 메소드를 호출한 곳으로 예외 객체를 넘겨줌
+```java
+public void thorwMethod() throws CustomException{
+    if(예외 발생 조건) throw new CustomException();   
+}
+```
+
+### 처리 규칙
+
+#### 1. try-catch
+```java
+// 적절한 예외처리
+try{
+	// 예외가 발생할 만한 코드
+} catch (XXException e){
+	// 처리코드
+} catch (YYException e){
+	// 처리코드
+} catch (Exception e){
+	// 처리코드
+}
+```
+
+```java
+// 적절하지 않은 예외처리
+try{
+	// 예외가 발생할 만한 코드
+} catch (Exception e){
+	// 처리코드
+} catch (YYException e){
+	// 처리코드
+} catch (XXException e){
+	// 처리코드
+}
+```
+
+JVM이 던진 예외는 catch문장을 찾을 때 다형성이 적용됨. <br>
+상위 타입의 예외가 먼저 선언되는 경우 뒤에 등장하는 catch는 절대 실행되지 않음.
+
+> Unreachable catch block for Exception.
+
+상속 관계가 없는 경우는 무관하다.
+
+작은 범위(자식)에서 큰 범위(부모)순으로 catch문을 정의하는것이 적절하게 예외처리하는 방법임.
+
+#### 2. throws
+```java
+class Parent {
+
+    void methodA() throws IOExeption{}
+    
+    void methodB() throws ClassNotFoundException{}
+    
+}
+
+class Child extends Parent {
+
+    @override
+    void methodA() throws FileNotFoundException{}
+
+    @override
+    void methodB() throws Exception{} // 문제 발생!
+    
+}
+```
+
+자식이 부모의 메서드를 오버라이딩 할 때, 부모 클래스가 던지는 예외보다 더 부모의 예외를 던질 수 없다! (같거나 하위타입으로 or 안던지거나 **(좁아짐)**)
+
+즉, 부모A가 던지는 어느 자식b가 있는데, A의 자식인 a가 이 b의 부모인 B를 던질 수는 없다.<br>
+a는 b 또는 b보다 더 작은 자식부터 던질 수 있음.
 
 ---
 
 ## 패키지
-
-#### 패키지 개념
 
 - 클래스를 구분짓는 폴더 개념
 - 패키지이름을 java 로 시작하면 안된다.
