@@ -50,7 +50,7 @@ java에서는 쓰레드를 2가지 방식으로 구현할 수 있다.
 
 Thread 클래스를 상속받아 쓰레드를 구현하면, Thread 클래스 내의 run 메소드를 재정의(Override) 하면 된다.
 
-```
+```java
 public class ThreadByThread extends Thread {
     @Override
     public void run() {
@@ -59,7 +59,7 @@ public class ThreadByThread extends Thread {
 }
 ```
 
-```
+```java
 public class Main {
     public static void main(String[] args) {
         ThreadByThread thread =new ThreadByThread();
@@ -76,7 +76,7 @@ Thread 클래스를 상속받은 객체를 생성하여 start 메소드를 호�
 
 Runnable 인터페이스를 구현하여 쓰레드를 구현하면, run 메서드 안에 쓰레드가 할 코드를 작성해주면 된다.
 
-```
+```java
 public class ThreadByRunnable implements Runnable {
     @Override
     public void run() {
@@ -85,7 +85,7 @@ public class ThreadByRunnable implements Runnable {
 }
 ```
 
-```
+```java
 public class Main {
     public static void main(String[] args) {
         Thread thread = new Thread(new ThreadByRunnable());
@@ -136,19 +136,89 @@ public class Main {
 
 ### 쓰레드 우선순위
 
+쓰레드에 우선순위를 부여함으로써 해당 쓰레드가 먼저 끝 날 확률을 높여준다.
 
+하지만, 우선순위가 높다고 해서 무조건 먼저 끝나는 것은 아니다.
+
+<br>
+
+java에서 쓰레드의 우선순위를 설정하는 방법은 `setPriority(int weight)` 메소드를 통해 설정 할 수 있다.
+
+`weight` 파라미터는 숫자가 클수록 우선순위가 높은것이며, 설정 범위는 1부터 10까지 우선순위를 설정할 수 있다.
+
+디폴트 `weight`는 중간값인 5가 설정된다.
 
 ---
 
 ### Main 쓰레드
 
+Main 쓰레드는 모든 자바 애플리케이션의 시작점이다.
+
+Main 쓰레드로 프로그램이 시작되어 실행을 되고, 멀티 쓰레드는 싱글 쓰레드인 Main 쓰레드에서부터 파생되어 생성된 쓰레드라고 할 수 있다.
+
+참고로, 멀티 쓰레드 어플리케이션에서는 Main 스레드가 종료되더라도 자식 스레드가 종료되지 않으면 어플리케이션이 종료되지 않는다.
+
+```java
+public static void main(String[] args) { // 메인 쓰레드 
+      Thread thread = new Thread(new ThreadByRunnable());  // 멀티 쓰레드 생성
+      thread.start();
+}
+```
+
 ---
 
 ### 동기화
 
+멀티쓰레드 프로그래밍에서 여러 쓰레드가 한 프로세스내 자원을 공유하므로 한 쓰레드가 진행중인 작업을 다른 쓰레드 쪽에서 사용, 변경하는 일이 발생할 수 있다.
+
+이러한 문제점을 해결 하기위해 하나의 쓰레드만 영역 내의 코드를 수행하도록 하는 쓰레드 동기화를한다.
+
+java에서 2가지 방식으로 멀티쓰레드 프로그래밍 동기화 할 수 있다. 
+ 
+1. `synchronized` 키워드 사용
+2. `java.lang.Object` 클래스의 `wait()`, `notify()`, `notifyAll()` 메소드 사용
+
+#### 1. `synchronized` 키워드 사용
+
+`synchronized` 키워드로 실행 블록이나, 메소드를 임계 구역으로 만들어 동기화 시킬 수 있다.
+
+> 동기화 블록
+
+```java
+synchronized(쓰레드 객체){
+     // 동기화 시킬 코드
+}
+```
+
+> 동기화 메소드
+
+```java
+public static synchronized void syncMethod(){
+   		// 동기화 시킬 코드
+}
+```
+
+해당 동기화 블록이나, 메소드는 하나의 쓰레드만이 진입될 수 있다.
+
+#### java.lang.Object 클래스의  wait(), notify(), notifyAll() 메소드 사용 
+
+아래 표의 메소드들은 임계 구역에서만 사용 가능하다.
+
+|메소드|설명|
+|:-:|:-:|
+|wait()|다른 스레드가 notify()로 불러줄 때까지 대기한다.|
+|notify()|무작위로 대기 중인 스레드를 깨워 RUNNABLE 상태로 변경, 2개 이상의 스레드가 대기 중이라도 오직 한 개의 스레드만 깨워 RUNNABLE 상태로 변경한다.|
+|notifyAll()|대기 중인 모든 스레드를 깨우고 모두 RUNNABLE 상태로 변경한다.|
+
 ---
 
 ### 데드락
+
+데드락은, 두 개 이상의 쓰레드들이 각자 자원을 점유한 상태에서 서로 다른 쓰레드의 자원을 요구하며 모두 무한정 대기중인 상태를 말한다.
+
+즉, 쓰레드1이 자원1을 점유하였고, 쓰레드2가 자원2를 점유한 상태에서 쓰레드1이 자원2를 요청하는데 쓰레드2도 자원 1을 요청하여 서로 자원을 점유한 채 요청만 하며 양보하지 않고 버티는 상황이다.
+
+그렇기 때문에 `yield()`를 사용하여 양보를 하기도 한다. 
 
 ---
 
