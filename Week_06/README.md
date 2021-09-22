@@ -14,7 +14,6 @@
 ### [Enum](#enum)
 - [enum 정의하는 방법](#enum-정의하는-방법)
 - [enum이 제공하는 메소드](#enum이-제공하는-메소드)
-- [java.lang.Enum](#javalangenum)
 - [EnumSet](#enumset)
 
 --- 
