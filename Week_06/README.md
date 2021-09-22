@@ -31,13 +31,13 @@
 
 <br> 
 
-일반적으로 한 프로그램(Process)은 하나의 스레드를 가지고 있지만, 프로그램 환경에 따라 둘 이상의 스레드를 동시에 실행할 수 있다. 이러한 실행 방식을 멀티스레드(multithread)라고 한다.
+일반적으로 한 프로그램(Process)은 하나의 쓰레드를 가지고 있지만, 프로그램 환경에 따라 둘 이상의 스레드를 동시에 실행할 수 있다. 이러한 실행 방식을 멀티쓰레드(multithread)라고 한다.
 
-근데 왜 멀티 프로세스 프로그래밍이 아니라 멀티 쓰레드 프로그래밍을 할까?
+근데 왜 멀티프로세스 프로그래밍이 아니라 멀티쓰레드 프로그래밍을 할까?
 
-멀티 프로세스와 멀티 스레드는 양쪽 모두 여러 흐름이 동시에 진행된다는 공통점을 가지고 있다. 
+멀티프로세스와 멀티쓰레드는 양쪽 모두 여러 흐름이 동시에 진행된다는 공통점을 가지고 있다. 
 
-하지만 멀티 프로세스에서 각 프로세스는 독립적으로 실행되며 각각 별개의 메모리를 차지하고 있는 것과 달리 멀티 스레드는 프로세스 내의 메모리를 공유해 사용할 수 있다. 또한 프로세스 간의 전환에는 많은 비용이 소모되기 때문에 속도와 비용 측면에서 스레드가 유리하기 때문이다.
+하지만 멀티프로세스에서 각 프로세스는 독립적으로 실행되며 각각 별개의 메모리를 차지하고 있는 것과 달리 멀티쓰레드는 프로세스 내의 메모리를 공유해 사용할 수 있다. 또한 프로세스 간의 전환에는 많은 비용이 소모되기 때문에 속도와 비용 측면에서 쓰레드가 유리하기 때문이다.
 
 java에서는 쓰레드를 2가지 방식으로 구현할 수 있다. 
 
@@ -110,12 +110,12 @@ public class Main {
 
 |상태|열거 상수|설명|
 |:-:|:-:|:-:|
-|생성|NEW|스레드 객체가 생성된 상태. 아직 start() 호출 전|
-|대기|RUNNABLE|실행될 준비(스케줄러에 의해 선택 받기 전)를 마친 상태. start() 호출 됨|
-|정지|WAITING|다른 스레드로부터 오는 이벤트를 대기하는 상태|
-||TIMED_WAITING|주어진 시간 동안 대기하는 상태|
-||BLOCKED|사용하고자 하는 객체의 lock이 풀릴 때까지 대기하는 상태|
-|종료|TERNINATED|실행이 다 끝난 상태|
+|생성|`NEW`|스레드 객체가 생성된 상태. 아직 `start()` 호출 전|
+|대기|`RUNNABLE`|실행될 준비(스케줄러에 의해 선택 받기 전)를 마친 상태. `start()` 호출 됨|
+|정지|`WAITING`|다른 스레드로부터 오는 이벤트를 대기하는 상태|
+||`TIMED_WAITING`|주어진 시간 동안 대기하는 상태|
+||`BLOCKED`|사용하고자 하는 객체의 lock이 풀릴 때까지 대기하는 상태|
+|종료|`TERNINATED`|실행이 다 끝난 상태|
 
 `NEW`로 쓰레드 객체를 생성하고, `start()` 메소드를 호출하면 곧바로 쓰레드가 실행되는 것처럼 보이지만 사실은 준비가 완료된 대기 상태이다. 
 
@@ -127,10 +127,10 @@ public class Main {
 
 |메소드|설명|
 |:-:|:-:|
-|static void yield()|현재 쓰레드가 프로세서의 현재 사용을 양보(yield) 할 의사가 있다는 스케줄러에 대한 힌트이다.|
-|static void sleep(long millis)|현재 실행중인 쓰레드가 지정된 밀리 초 동안 일시적으로 실행 중지 되도록 한다. 즉, TIMED_WAITING 상태로 만든다.|
-|void join(long millis)|이 쓰레드가 작업이 완료 될 때까지 기다린다.|
-|void interrupt()|이 쓰레드의 interrupted 상태를 true로 변경한다.|
+|`static void yield()`|현재 쓰레드가 프로세서의 현재 사용을 양보(yield) 할 의사가 있다는 스케줄러에 대한 힌트이다.|
+|`static void sleep(long millis)`|현재 실행중인 쓰레드가 지정된 밀리 초 동안 일시적으로 실행 중지 되도록 한다. 즉, `TIMED_WAITING` 상태로 만든다.|
+|`void join(long millis)`|이 쓰레드가 작업이 완료 될 때까지 기다린다.|
+|`void interrupt()`|이 쓰레드의 interrupted 상태를 true로 변경한다.|
 
 ---
 
@@ -206,9 +206,9 @@ public static synchronized void syncMethod(){
 
 |메소드|설명|
 |:-:|:-:|
-|wait()|다른 스레드가 notify()로 불러줄 때까지 대기한다.|
-|notify()|무작위로 대기 중인 스레드를 깨워 RUNNABLE 상태로 변경, 2개 이상의 스레드가 대기 중이라도 오직 한 개의 스레드만 깨워 RUNNABLE 상태로 변경한다.|
-|notifyAll()|대기 중인 모든 스레드를 깨우고 모두 RUNNABLE 상태로 변경한다.|
+|`wait()`|다른 스레드가 `notify()`로 불러줄 때까지 대기한다.|
+|`notify()`|무작위로 대기 중인 스레드를 깨워 `RUNNABLE` 상태로 변경, 2개 이상의 스레드가 대기 중이라도 오직 한 개의 스레드만 깨워 `RUNNABLE` 상태로 변경한다.|
+|`notifyAll()`|대기 중인 모든 스레드를 깨우고 모두 `RUNNABLE` 상태로 변경한다.|
 
 ---
 
@@ -224,19 +224,67 @@ public static synchronized void syncMethod(){
 
 ## Enum
 
+enum 이란 관련이 있는 "상수"의 집합을 정의하는 타입으로 클래스의 특수한 형식이다.
+
+자바5부터 enum 타입이 도입되었고, 변수, 메소드, 생성자를 추가하여 사용할 수 있다.
+
+enum 타입은 여러 특성들이 존재한다.
+
+1. `java.lang.Enum` 클래스(추상 클래스)를 상속한 완전한 클래스이므로 필드와 메소드를 가질 수 있으며, 그러므로 다른 클래스를 상속받을 수 없다.
+2. `public static final` 타입으로 공개되며 상수와 동일하게 명칭을 전부 대문자로 정의한다.
+3. 고정된 상수들의 집합이기 때문에 런타임이 아닌 컴파일타임에 모든 값을 알고있어야 하므로 생성자의 접근지정자가 `private`로 동적으로 값을 변경하여 생성하면 안된다.
+4. singleton 패턴이 적용되어 필드에 존재하는 상수 하나당 하나의 인스턴스가 된다.
+5. 싱글톤으로 존재하므로 객체를 `equals()` 메소드가 아닌 `==` 로 비교가 가능하다.
+
 ---
 
 ### enum 정의하는 방법
+
+```java
+public enum CHICEKN {
+    [public static final] BBQ("BBQ치킨"),  //CHICEKN.BBQ로 접근
+    [public static final] PURADAK("푸다락치킨"), // ;가 아닌 ,
+    [public static final] GOOBNE("굽네치킨"); // 내부적으로 new로 생성한 것과 같다.
+
+    private final String name; // 필드를 가질 수 있음
+
+    [private] CHICEKN(String name) { // private 생략
+        this.name = name;
+    }
+
+    public String getName() { // 메소드를 가질 수 있음
+        return name;
+    }
+}
+```
 
 ---
 
 ### enum이 제공하는 메소드
 
----
+enum 타입은 java.lang.Enum 클래스를 상속하므로 해당 클래스의 메소드를 사용할 수 있는데,
 
-### java.lang.Enum
+대표적인 메소드로는 `values()`, `valueOf()`, `ordinal()`이 있다.
+
+|메소드|설명|
+|:-:|:-:|
+|`values()`|모든 enum 요소들을 enum 타입 배열로 반환|
+|`valueOf()`|특정 문자열이 enum 타입으로 존재하면 반환(존재하지 않으면 exception 발생)|
+|`ordinal()`|해당 enum 요소의 index를 반환|
 
 ---
 
 ### EnumSet
 
+이름 그대로 Set을 기반으로 쉽고 빠르게 enum 타입 요소들을 다룰수 있는 기능을 제공한다.
+
+enum은 싱글턴 패턴의 단일 객체임을 보장 함으로 해싱작업을 필요로 하지 않기 때문에 EnumSet은 enum의 요소 갯수가 64개를 넘지 않는다면, 내부적으로 long 데이터형의 64비트 필드를 이용하여 좋은 성능을 보여준다.
+
+대표적인 EnumSet의 메소드로는 `.allOf(enum.class)`, `EnumSet.of(enum1, enum2...)`, `EnumSet.complementOf(enum of EnumSet)`, `EnumSet.range(enum1, enum4)` 가 있다.
+
+|메소드|설명|
+|:-:|:-:|
+|`.allOf(enum.class)`|enum 타입의 모든 요소들을 가져오기|
+|`EnumSet.of(enum1, enum2...)`|특정 enum요소들을 가져오기|
+|`EnumSet.complementOf(enum of EnumSet)`|특정한 enum요소를 제외하고 가져오기|
+|`EnumSet.range(enum1, enum4)`|범위로 요소들 가져오기|
