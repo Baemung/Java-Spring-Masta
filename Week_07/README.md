@@ -12,9 +12,8 @@
 - [파일 읽고 쓰기](#파일-읽고-쓰기)
 
 ### [Generic](#generic)
-- [Generic 개념](#generic-개념)
-- [Generic 사용법](#generic-사용법)
-- [Generic 메소드](#generic-메소드)
+- [BoundedType](#boundedtype)
+- [WildCard](#wildcard)
 - [Erasure](#erasure)
 
 ### [Lambda](#lambda)
@@ -27,17 +26,15 @@
 
 ## I/O
 
-I/O는 Input(입력) and Output(출력)의 약자이다.
+`I/O`는 Input(입력) and Output(출력)의 약자이다.
 
 I/O의 간단한 예시는, 키보드로 텍스트를 입력하고 모니터로 입력한 텍스트를 출력하는 것이다.
 
- 그래서 S
-
-기존의 IO(I/O)방식은 스트림 방식의 입출력인데, 이 방식으로는 네트워크상에서 이루어지는 입출력의 속도가 하드웨어에서 이루어지는 입출력 속도에 비해 현저히 느리기 때문에 문제점이 생겼다.
+기존의 `IO(I/O)`방식은 스트림 방식의 입출력인데, 이 방식으로는 네트워크상에서 이루어지는 입출력의 속도가 하드웨어에서 이루어지는 입출력 속도에 비해 현저히 느리기 때문에 문제점이 생겼다.
 
 또한 스트림 방식은 병목현상에 매우 취약하다는 단점이 있고 네트워크의 발전보다 하드웨어의 발전속도가 앞서나가면서 새로운 I/O 방식이 필요해졌다.
 
-그래서 이러한 네트워크 환경에서의 문제점을 해결하기위해서 NIO(NEW I/O)방식이 나타났다.
+그래서 이러한 네트워크 환경에서의 문제점을 해결하기 위해서 `NIO(NEW I/O)`방식이 나타났다.
 
 |구분|IO|NIO|
 |:-:|:-:|:-:|
@@ -170,21 +167,109 @@ BufferedReader br = new BufferedReader(fr);
 
 ## Generic
 
+`Java 5`부터 추가되어 클래스와 인터페이스, 메소드를 정의할 때 `타입 변수`를 사용할 수 있게 하는 방법이다.
+
+- **`타입 변수`** : 일반적으로 대문자 알파벳 한 글자로 표현한다.
+  - `<T>` :	Type
+  - `<E>` :	Element
+  - `<K>` :	Key
+  - `<N>` :	Number
+  - `<V>` :	Value
+  - `<R>` :	Return
+
+컴파일 시의 객체의 타입을 체크를 해주는 기능을 제공함으로써 안정성을 높이고 형변환의 번거로움을 줄여준다.
+
+`Collection` 라이브러리에서 흔히 `Generic`이 활용된다.
+```java
+//List<T>
+List<Integer> listG = new ArrayList<>(); // 제네릭
+listG.add(1);
+int temp = listG.get(0);
+
+List listNG = new ArrayList(); // 제네릭 사용 X
+listNG.add(1);
+temp = (int)listNG.get(0); // 형변환 필요
+```
+
+Generic은 `Generic 타입`과 `Generic 메소드`로 구분할 수 있다.
+
+#### `Generic 타입`
+
+타입 변수가 있는 클래스 또는 인터페이스
+
+```java
+class GenericClass<T> {
+     ...
+}
+
+interface  GenericInterface<T> {
+     ...
+}
+```
+
+#### `Generic 메소드`
+
+매개 타입과 리턴 타입으로 타입 변수를 갖는 메소드
+
+```java
+public <T, R> R genericMethod(T t) { }
+```
+
+#### 제네릭을 사용할 수 없는 경우
+
+1. **제네릭 타입의 배열을 생성할 경우** : new T[N]은 컴파일 타임에 배열의 타입을 알 수 없기 때문에 사용할 수 없다.
+
+2. **static 변수에 사용할 경우** : static 변수는 인스턴스에 종속되지 않으므로 인스턴스별 타입이 변경될 수 없기 때문에 사용할 수 없다. (단, static 메소드에는 제네릭 사용 가능)
+
+<br>
+
+Generic의 주요 개념으로는 `Bounded-Type`과 `Wild-Card`가 있다.
+
 ---
 
-### Generic 개념
+### BoundedType
+
+`Bounded-Type`은 제네릭으로 사용될 타입 변수의 범위를 제한하는 것이다.
+
+Generic 타입에 `extends`를 사용하여 타입 변수의 범위를 제한한다. (인터페이스, 클래스 모두 상관없이 `extends`를 사용)
+
+```java
+public class CustomGeneric<T extends Number> {
+     ...
+}
+
+CustomGeneric<Integer> listI = new CustomGeneric<();
+CustomGeneric<String> listS = new CustomGeneric<>(); // Bounded-Type으로 타입 변수를 Number로 제한했기 때문에 컴파일 에러 발생!
+```
+
+```java
+public class CustomGeneric<T extends ClassName & InterfaceName> { // & 기호를 사용하여 타입 변수를 클래스와 인터페이스 2개로 제한 가능 
+     ...
+}
+```
 
 ---
 
-### Generic 사용법
+### WildCard
 
----
+제네릭 타입을 메소드의 매개값으로 전달할 때 구체적인 타입으로만 타입 제한이 생긴다 그러한 문제를 해결하기 위해 와일드 카드를 사용한다.
 
-### Generic 메소드
+`?` 키워드를 사용하여 와일드 카드를 사용할 수 있다.
+
+- `제네릭 타입 <?>` : 제한 없음. 모든 클래스나 인터페이스 가능
+- `제네릭 타입 <? extends 상위 타입>` : 타입의 상한선 지정(해당 타입 및 하위타입만, 최상이 제시한 타입), 최대 제시된 상위 타입보다 더 상위 타입을 사용할 수 없음
+- `제네릭 타입 <? super 하위 타입>` : 타입의 하한선 지정(해당 타입 및 상위타입만, 최하가 제시한 타입), 최소 제시된 하위 타입보다 더 하위 타입을 사용할 수 없음
 
 ---
 
 ### Erasure
+
+- `제네릭의 타입 소거(Generics Type Erasure)` : 컴파일러는 제네릭 타입을 이용해 소스파일을 검사하고 런타임에는 해당 타입의 정보를 알 수 없다는 개념이다. 즉, 컴파일된 파일`*.class`에는 제네릭 타입에 대한 정보가 없다는 뜻.
+
+#### Erasure 규칙
+- `UnBounded-Type`은 (<?>, <T>) => Object
+- `Bounded-Type`은 extends 뒤에 작성한 객체
+  - ex) <T extends Number> => Number
 
 ---
 
