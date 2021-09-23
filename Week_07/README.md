@@ -62,6 +62,8 @@ Stream이 데이터를 어떤 방식으로 전달하느냐에 따라 2가지로 
     - 데이터를 Byte 단위로 주고 받음
     - Binary 데이터를 입출력하는 스트림
     - **모든 종류의 데이터** 를 주고받을 수 있음
+    - `InputStream`과 `OutputStream` 클래스를 상속받아 사용
+    - ---
     - `FileInputStream` / `FileOutputStream` : 파일 입출력 스트림
     - `ByteArrayInputStream` / `ByteArrayOutputStream` : 메모리 입출력 스트림
     - `PipedInputStream` / `PipedOutputStream` : 프로세스 입출력 스트림
@@ -74,12 +76,13 @@ Stream이 데이터를 어떤 방식으로 전달하느냐에 따라 2가지로 
     - 문자 데이터를 인코딩 처리하여 입출력하는 스트림
     - 오직 **문자 데이터** 만 주고받을 수 있음
     - `Reader`와 `Writer` 클래스를 상속받아 사용
+    - ---
     - `FileReader` / `FileWriter` : 파일 입출력 스트림
     - `CharArrayReader` / `CharArrayWriter` : 메모리 입출력 스트림
     - `PipedReader` / `PipedWriter` : 프로세스 입출력 스트림
     - `StringReader` / `StringWriter` : 문자열 입출력 스트림
 
-두 stream은 모두 처음에는 Byte로 받아들이고, 그 다음은 각 Stream이 알아서 처리를 해준다.
+두 Stream은 모두 처음에는 byte로 받아들이고, 그 다음은 각 Stream이 알아서 처리를 해준다.
 
 ---
 
