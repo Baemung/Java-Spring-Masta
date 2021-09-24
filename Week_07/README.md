@@ -11,12 +11,12 @@
 - [OutputStream](#outputstream)
 - [파일 읽고 쓰기](#파일-읽고-쓰기)
 
-### [Generic](#generic)
+### [Generic](#generic-1)
 - [BoundedType](#boundedtype)
 - [WildCard](#wildcard)
 - [Erasure](#erasure)
 
-### [Lambda](#lambda)
+### [Lambda](#lambda-1)
 - [Lambda 사용법](#lambda-사용법)
 - [함수형 인터페이스](#함수형-인터페이스)
 - [Variable Capture](#variable-capture)
