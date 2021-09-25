@@ -51,7 +51,15 @@ Stream이란, 한 방향으로 연속적으로 흘러가는 것을 의미한다.
 
 ![Untitled](https://user-images.githubusercontent.com/51703260/134504606-d51eed4a-a9bd-41f8-9d45-4050e46ea012.png)
 
-이 Stream이 프로그래밍에서는 자료의 입출력이 한방향으로 흘러갈 수 있도록 도와주는 매개체라는 의미로 사용된다.
+이 Stream이 프로그래밍에서는 데이터가 한 방향으로 흘러갈 수 있도록 도와주는 관, 통로라는 의미로 사용된다.
+
+입출력 노드에 직접 연결괴는 Stream을 `노드스트림`이라고 하고, 이는 **필수** 다.
+
+그리고 다른 스르팀을 보조하는 기능적인 Stream을 `필터스트림`이라고 하며, 이는 **옵션** 이다.
+
+`데코레이터패턴`으로 `노드스트림`이 `필터스트림`이 추가되는 방식이다. 
+
+<br>
 
 Stream이 데이터를 어떤 방식으로 전달하느냐에 따라 2가지로 구분할 수 있다.
 
@@ -276,13 +284,118 @@ public class CustomGeneric<T extends ClassName & InterfaceName> { // & 기호를
 
 ## Lambda
 
+람다식(Lambda expression)은 메소드를 간단하면서 명확한 `식(expression)`으로 표현한 것이다.
+
+람다식은 인해 이름과 리턴타입이 필요없어, `익명 함수(anonymous function)`라고도 한다.
+
+람다식은 메소드와 동등한 것처럼 보이지만, 사실 람다식은 익명 클래스의 객체와 동등하여 런타임 시에 인터페이스의 익명 구현 객체로 생성되고 대입되는 인터페이스에 따라 구현 인터페이스가 결정된다.
+
+Lambda의 도입으로 인해 자바는 객체 지향 언어인 동시에 함수형 언어가 되었다.
+
 ---
 
 ### Lambda 사용법
 
+메소드에서 메소드이름과 리턴타입을 제거하고 `매개변수` `{실행코드}` 사이에 `->` 화살표를 추가하여
+
+`매개변수` -> `{실행코드}` 로 람다식을 사용할 수 있다.
+
+메소드를 선언 할 때도 끝에 `세미콜론 ;`을 붙이지 않듯이, 람다식 또한 마찬가지로 `세미콜론 ;`을 붙이지 않는다 
+
+```java
+// 메소드
+리턴타입 메소드이름 (매개변수타입 매개변수) {
+    실행코드
+}
+// 람다식
+((매개변수) -> {실행코드})
+// 매개변수 :
+// 매개변수가 하나일 때는 ()를 생략할 수 있다.   
+// 단, 매개변수 타입이 있으면(대부분의 매개변수 타입은 추론이 가능해서 생략 가능) ()를 생략할 수 없다.  
+// 코드 : 
+// 실행코드가 하나일 때는 {}를 생략할 수 있다.   
+// 단, {} 안의 실행코드에 return 키워드가 사용되는 경우 {}를 생략할 수 없다. 
+
+
+// 메소드
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+// 람다식
+((a, b) -> a > b ? a : b) // 매개변수가 a와 b 2개이므로 () 생략 불가. 그리고 return 키워드가 사용되지 않으므로 {} 생략 가능
+```
+
+List를 람다식으로 조작하는 간단한 예시를 살펴보자.
+
+```java
+ArrayList<Integer> list = new ArrayList<Integer>();
+for(int i=1; i<=10; ++i) list.add(i);
+		
+list.replaceAll(e -> e+10); // 모든 요소에 10씩 더하기
+list.removeIf(e -> e%2==1); // 홀수값 요소 없애기
+list.forEach(e -> System.out.println(e)); // 모든 요소 출력	
+```
+
+그리고 PS를 하다보면 자주 접하게 되는 Comparator 인터페이스의 compare메소드 또한 익명 구현 객체로 사용할 수도 있지만, 람다식으로 간단하게 표현할 수 있다. 
+```java
+// Comparator 인터페이스의 compare메소드 익명 구현 객체
+Arrays.sort(time, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] t1, int[] t2) {
+				if(t1[0] == t2[0]) return t1[1] - t2[1];
+				else return t1[0] - t2[0];
+			}
+		});
+```
+
+```java
+// 람다식
+Arrays.sort(time, (t1, t2)->{
+			if(t1[0] == t2[0]) return t1[1] - t2[1];
+			else return t1[0] - t2[0];
+		});
+```
+
 ---
 
 ### 함수형 인터페이스
+
+람다 표현식으로 구현이 가능한 인터페이스는 추상 메서드를 1개만 가지고 있는 인터페이스만 가능하다.
+
+그래서 추상 메서드가 1개인 인터페이스를 함수형 인터페이스라고 한다.
+
+```java
+// 약식 사용 예제
+@FunctionalInterface
+interface CustomFunction{
+    void customMethod();
+}
+
+// 사용 1. 람다식을 참조하는 참조변수로 함수형 인터페이스를 지정하고, 참조변수에서 메소드를 호출
+CustomFunction cf = () -> System.out.println("This is FunctionalInterface");
+customMethod(cf); // This is FunctionalInterface
+
+// 사용 2. 참조변수 없이 바로 람다식을 메소드로 사용 
+customMethod() -> System.out.println("This is FunctionalInterface");
+```
+
+```java
+// 매개변수를 받고 리턴해주는 예제
+@FunctionalInterface
+interface CustomFunction{
+    int customMethod(int a, int b);
+}
+
+CustomFunction cf = (a, b) -> a > b ? a : b;
+int bigNum = cf.customMethod(1, 2); 
+
+```
+
+`@FunctionalInterface` : 해당 인터페이스가 함수형 인터페이스라는걸 알려주는 애노테이션, 인터페이스 선언시 해당 애노테이션을 붙이면 2개 이상의 추상 메소드가 선언되지 않았는지 컴파일러가 체크하여 2개 이상의 추상 메소드가 선언되어 있다면 컴파일 에러가 발생한다.
+
+모든 애노테이션들의 기능이 그렇듯, `@FunctionalInterface`은 컴파일러에게 확인을 부탁하는 것일 뿐 안붙어있다고 해서 함수형 인터페이스로 동작하지 않는 것은 아니다. 
+
+자바에서 함수형 인터페이스를 제공하는 [표준 API](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html) `java.util.function`를 제공해준다.
 
 ---
 
