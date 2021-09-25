@@ -1,7 +1,14 @@
 ## 🎯 목표
-### 자바의 I/O, Generic, Lambda에 대해 학습하기.
+### 자바의 Annotation, I/O, Generic, Lambda에 대해 학습하기.
 
 ## 📌 학습할 것
+### [Annotation](#annotation-1)
+- [정의하는 방법](#정의하는-방법)
+- [@retention](#retention)
+- [@target](#target)
+- [@documented](#documented)
+- [Annotation Processor](#annotation-processor)
+
 ### [I/O](#io-1)
 - [Stream](#stream)
 - [표준 Stream](#표준-stream)
@@ -23,6 +30,30 @@
 - [메소드, 생성자 레퍼런스](#메소드-생성자-레퍼런스)
 
 --- 
+
+## Annotation
+
+---
+
+### 정의하는 방법
+
+---
+
+### @retention
+
+---
+
+### @target
+
+---
+
+### @documented
+
+---
+
+### Annotation Processor
+
+---
 
 ## I/O
 
