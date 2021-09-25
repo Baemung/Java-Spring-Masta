@@ -438,3 +438,43 @@ int bigNum = cf.customMethod(1, 2);
 
 ### 메소드, 생성자 레퍼런스
 
+#### `Method Reference` 
+
+람다식이 하나의 메소드만 호출하는 경우에는 '메소드 참조(Method References)'를 통해 람다식을 더 간략하게 표현할 수 있다.
+
+메소드를 참조해서 매개 변수의 정보 및 리턴 타입을 알아낸다. 람다식에서 불필요한 매개 변수를 제거하는 것이 목적이다.
+
+> ClassName::MethodName
+>
+> or
+>
+> ReferenceVariable::MethodName
+
+```java
+Integer parseInt(String s) { 				// 메소드
+    return Integer.parseInt(s);
+}
+Function<String, Integer> f = s -> Integer.parseInt(s); // 람다식
+Function<String, Integer> f = Integer::parseInt; 	// 메소드 참조
+```
+
+```java
+Function<String, String, Boolean> f = (s1, s2) -> s1.equlas(s2); 	// 람다식
+Function<String, String, Boolean> f = String::equals; 			// 메소드 참조
+```
+
+#### `Constructor References`
+
+`생성자 참조(Constructor References)`는 Constructor를 생성해주는 코드로써 객체 생성을 의미한다.
+
+> ClassName::new
+
+```java
+Function<Integer, int[]> f = x -> new int[x];   // 람다식
+Function<Integer, int[]> f2 = int[]::new;  	// 생성자 참조
+```
+
+```java
+Supplier<CustomClass> s = () -> new CustomClass(); 	// 람다식
+Supplier<CustomClass> s = CustomClass:new; 		// 생성자 참조
+```
