@@ -471,7 +471,7 @@ Function<String, String, Boolean> f = String::equals; 			// 메소드 참조
 
 ```java
 Function<Integer, int[]> f = x -> new int[x];   // 람다식
-Function<Integer, int[]> f2 = int[]::new;  	// 생성자 참조
+Function<Integer, int[]> f = int[]::new;  	// 생성자 참조
 ```
 
 ```java
