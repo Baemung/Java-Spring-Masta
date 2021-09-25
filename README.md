@@ -11,4 +11,4 @@
 * [4주차 : 클래스, 인터페이스](https://github.com/Baemung/Java-Study/tree/main/Week_04)
 * [5주차 : 상속, 예외처리, 패키지](https://github.com/Baemung/Java-Study/tree/main/Week_05)
 * [6주차 : 멀티쓰레드 프로그래밍, Enum](https://github.com/Baemung/Java-Study/tree/main/Week_06)
-* [7주차 : I/O, 제네릭, 람다식, 애노테이션](https://github.com/Baemung/Java-Study/tree/main/Week_07)
+* [7주차 : 애노테이션, I/O, 제네릭, 람다식](https://github.com/Baemung/Java-Study/tree/main/Week_07)
