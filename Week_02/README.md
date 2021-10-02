@@ -15,9 +15,9 @@
 
 ### 💡 Primitive 타입 종류와 값의 범위 그리고 기본 값
 
-<p align="center"><img src="../img/chap2_3.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/51703260/135708453-fa8d7fb4-0591-4457-816e-68abae7d5d18.png"></p>
 
-**Primitive type 종류**
+**`Primitive type` 종류**
 - 원자성의 Data
 - 수의 표현 범위 : byte < short < int < long < float < double     
 
@@ -39,7 +39,7 @@
 ---
 
 ### 💡 Reference 타입
-**Reference type** = All type - Primitive type
+**`Reference type`** = All type - Primitive type
 
 **non-Primitive type**
 - Reference type; 참조타입
@@ -56,7 +56,7 @@ char ch = 65;
 char ch = '\u0041'; //A의 유니코드표기 (4*16^1+1*16^0 = 65)
 ```
 
-<p align="center"><img src="../img/chap2_1.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/51703260/135708467-12e3a0c0-1c34-4c62-b21e-abd397a786ca.png"></p>
 
 > **Wrapper Class ?** Primitive Type을 Boxing하여 객체화하는 클래스!
 > 
@@ -76,12 +76,12 @@ Integer i = new Integer(10);
 > 경우에 따라, 아래 이미지와 같은 상황도 발생할 수 있다.
 > equals로 값은 동일하지만 == 가 서로 다르다는 결과를 보일 때도 있다.
 
-<p align="center"><img src="../img/chap2_2.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/51703260/135708478-7c8fb41b-2729-422d-b3ff-34b04dffca36.png"></p>
 
 ---
 
 ### 💡 Literal
-**Literal** : 자바 코드에 직접 '값'을 명시하면 리터럴로 분류함
+**`Literal`** : 자바 코드에 직접 '값'을 명시하면 리터럴로 분류함
 소스 코드의 고정된 값을 대표하는 용어
 
 **Literal 종류**
@@ -124,7 +124,7 @@ char c = \uae00;(유니코드값) // \u다음에 4자리 16진수로, 2바이트
 ```
 아래와 같이 각각의 기능을 가지는 특수문자 리터럴도 존재한다.
 
-<p align="center"><img src="../img/chap2_4.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/51703260/135708485-c3807320-9c63-4fd8-b43e-a16535b7b80e.png"></p>
 
 **4. 논리 리터럴**
 
@@ -248,15 +248,15 @@ public class InitVar{
 
 #### 변수의 Lifetime : 변수가 메모리에 살아있는 기간
 
-**인스턴스 변수**
+**`인스턴스 변수`**
 - Scope: static 메소드를 제외한 클래스 전체
 - Lifetime : 객체가 메모리에 남아있을 때까지
 
-**클래스 변수**
+**`클래스 변수`**
 - Scope: 클래스 전체
 - Lifetime : 클래스가 메모리에 로딩 되어 있는 동안
 
-**로컬 변수**
+**`로컬 변수`**
 - Scope: 선언된 블록 내
 - Lifetime : 선언 된 블록이 끝날 때까지
 
@@ -269,9 +269,9 @@ public class InitVar{
 
 **Primitive Type**
 
-**- 캐스팅 :** 큰 데이터 타입에서 작은 데이터 타입으로 형 변환 (강제적으로 앞에서 명시적 형변환을 해주지 않으면 에러 발생)
+**- `캐스팅` :** 큰 데이터 타입에서 작은 데이터 타입으로 형 변환 (강제적으로 앞에서 명시적 형변환을 해주지 않으면 에러 발생)
 
-**- 프로모션 :** 작은 데이터 타입에서 큰 데이터 타입으로 형 변환 (자동 형변환)
+**- `프로모션` :** 작은 데이터 타입에서 큰 데이터 타입으로 형 변환 (자동 형변환)
 
 ```java
 int a = 10;
@@ -305,7 +305,7 @@ Student s = (Student)p;   // 컴파일 에러
 
 ### 💡 배열
 
-<p align="center"><img src="../img/chap2_5.png"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/51703260/135708504-dba030e0-ef78-4f8c-bde7-b3f344e6ff1b.png"></p>
 
 **Reference Type (즉, 배열도 객체)**
 
@@ -360,7 +360,7 @@ index는 첫번째 원소 기준 offset 개념
 ### 💡 타입 추론, var
 
 #### 타입 추론 : 변수의 타입을 명시하지 않고 컴파일러가 타입을 추측해서 컴파일 하는것. 
-#### var : 타입 추론을 위한 람다 타입. 
+#### `var` : 타입 추론을 위한 람다 타입. 
 
 Java 10부터 var 키워드를 통해 변수를 선언할 수 있게 됐다.
 
