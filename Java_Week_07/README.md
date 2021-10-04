@@ -429,7 +429,7 @@ public class CustomGeneric<T extends ClassName & InterfaceName> { // & 기호를
 
 - `제네릭의 타입 소거(Generics Type Erasure)` : 컴파일러는 제네릭 타입을 이용해 소스파일을 검사하고 런타임에는 해당 타입의 정보를 알 수 없다는 개념이다. 즉, 컴파일된 파일`*.class`에는 제네릭 타입에 대한 정보가 없다는 뜻.
 
-#### 💡 Erasure 규칙
+#### Erasure 규칙
 - `UnBounded-Type`은 Object
   - ex) `(<?>, <T>)` => Object
 - `Bounded-Type`은 extends 뒤에 작성한 객체
