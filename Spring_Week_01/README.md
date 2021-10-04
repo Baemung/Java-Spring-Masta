@@ -4,9 +4,9 @@
 ### 📌 학습할 것
 - [DAO](#dao)
 - [IoC](#ioc)
-- [싱글톤 레지스트리](#싱글톤-레지스트리)
+- [Singleton](#singleton)
 - [DI](#di)
-- [XML을 이용한 설정](#xml을-이용한-설정)
+- [XML](#xml)
 
 ---
 
@@ -18,7 +18,7 @@
 
 ---
 
-## 싱글톤 레지스트리
+## Singleton
 
 `DaoFactory`를 직접 사용하는 것과, `@Configuration` Annotation을 추가해서 스프링의 `ApplicationContext`를 통해 사용하는 것은 테스트 결과만 보면 동일해 보인다.
 
