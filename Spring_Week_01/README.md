@@ -143,5 +143,5 @@ ApplicationContext는 `IoC 컨테이너`이면서 동시에 싱글톤을 저장�
 
 ---
 
-## XML을 이용한 설정
+## XML
 
