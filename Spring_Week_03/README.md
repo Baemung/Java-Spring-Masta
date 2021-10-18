@@ -105,13 +105,92 @@ public void add(User user) throws SQLException{
 
     - 이 오브젝트가 사용되는 시점은 컨텍스트가 전략 오브젝트를 호출할 때이므로 잠시라도 어딘가에 저장해둘 수밖에 없다.
 
-> 1.을 해결할 수 있는 방법
+> 해결할 수 있는 방법
 ### 로컬 클래스
 
+**StatementStrategy** 전략 클래스를 매번 독립된 파일로 만들지 말고 **UserDao 클래스 안 (add() 메소드) 에 내부 클래스로 정의함** 으로써 클래스 파일이 많이지는 문제를 간단하게 해결할 수 있다.
 
-> 2.를 해결할 수 있는 방법
+> `add()` 메소드 내의 로컬 클래스로 이전한 **AddStatement**
+```java
+public void add(final User user) throws SQLException {
+  class AddStatement implements StatementStrategy {
+    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+      PreparedStatement ps = c.preparedStatement("insert into users(id, name, password) values (?, ?, ?)");
+      
+      ps.setString(1, user.getId());
+      ps.setString(2, user.getName());
+      ps.setString(3, user.getPassword());
+      
+      return ps;
+    }
+  }
+  
+  StatementStrategy st = new AddStatement(user);
+  jdbcContextWithStatementStrategy(st);
+}
+```
+
+마치 로컬 변수를 선언하듯이 메소드안에 로컬 클래스를 선언하면 선언된 메소드 내에서만 해당 클래스를 사용할 수 있다.
+
+**AddStatement** 가 사용될 곳이 `add()` 메소드뿐이라면, 위와 같은 방식으로 사용하기 전에 바로 정의해서 사용하면 3가지 부분에서 장점이 있다.
+
+1. 클래스 파일이 줄어듦. (1번 문제 해결)
+2. `add()` 메소드 안에서 **PreparedStatement** 생성 로직을 함께 볼 수 있어 코드 이해가 유리함.
+3. 자신이 선언된 곳의 정보에 접근 할 수 있기 때문에 **AddStatement** 클래스가 `add()` 메소드의 파라미터 user를 직접 사용할 수 있다. (2번 문제 해결)
+    - 다만 내부 클래스에서 외부 변수를 사용할 땐 반드시 해당 변수 `final`로 선언, user 파라미터가 메소드 내부에서 변경될 일이 없기 때문에 `final`로 선언해줘도 무방함
+
+> 한번 더 최적화
 ### 익명 내부 클래스
 
+자바에는 이름조차 필요 없는 **`익명 내부 클래스`** 가 존재한다.
+
+> **`익명 내부 클래스`**
+> 
+> 이름을 갖지 않는 클래스로써, 재사용할 필요가 없고 구현한 인터페이스 타입으로만 사용할 경우에 유용하다. 
+> 
+> 클래스 선언과 오브젝트 생성이 결합된 형태로 만들어지며, 상속할 클래스나 구현할 인터페이스를 생성자 대신 사용해서 아래과 같은 형태로 사용함.
+> 
+> ```java
+> new 인터페이스이름() { 클래스 본문 };
+> ```
+
+> **AddStatement** 를 익명 내부 클래스로 만든 `add()` 메소드
+```java
+public void add(final User user) throws SQLException {
+  jdbcContextWithStatementStrategy (
+    new StatementStrategy() {
+      public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+        PreparedStatement ps = c.preparedStatement("insert into users(id, name, password) values (?, ?, ?)");
+
+        ps.setString(1, user.getId());
+        ps.setString(2, user.getName());
+        ps.setString(3, user.getPassword());
+
+        return ps;
+      }
+    }
+  );
+}
+```
+
+어차피 클래스 파일을 생성하지 않고 **AddStatement** 는 `add()` 메소드 안에서 1회성으로 사용 할 목적이기 때문에 익명 내부 클래스로 생성하는 것이 적절하다.
+
+그리고 만들어진 익명 내부 클래의 오브젝트는 딱 한 번만 사용할 것이 때문에 굳이 변수에 담아둘 필요 없이 `jdbcContextWithStatementStrategy()` 메소드의 파라미터에서 바로 생성하는 편이 낫다.
+
+마찬가지로 **DeleteAllStatement**도 `deleteAll()` 메소드로 가져와서 익명 내부 클래스로 처리할 수 있다.
+
+> **DeleteAllStatement** 도 익명 내부 클래스로 만든 `deleteAll()` 메소드
+```java
+public void deleteAll() throws SQLException {
+  jdbcContextWithStatementStrategy (
+    new StatementStrategy() {
+      public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+        return c.preparedStatement("delete from users");
+      }
+    }
+  );
+}
+```
 
 ---
 
