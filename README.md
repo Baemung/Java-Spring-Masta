@@ -25,4 +25,5 @@
 * [8주차 : 스프링이란 무엇인가?](https://github.com/Baemung/Java-Study/tree/main/Spring_Week_07)
 * [9주차 : 스프링 프로젝트 시작하기](https://github.com/Baemung/Java-Study/tree/main/Spring_Week_07)
 
-### 1주차 완료.
+### 완료일지
+- 1주차 완료 이렇게 하는거 맞나...
