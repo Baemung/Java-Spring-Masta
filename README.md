@@ -24,3 +24,5 @@
 * [7주차 : 스프링 핵심 기술의 응용](https://github.com/Baemung/Java-Study/tree/main/Spring_Week_07)
 * [8주차 : 스프링이란 무엇인가?](https://github.com/Baemung/Java-Study/tree/main/Spring_Week_07)
 * [9주차 : 스프링 프로젝트 시작하기](https://github.com/Baemung/Java-Study/tree/main/Spring_Week_07)
+
+### 1주차 완료.
